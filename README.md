@@ -1,5 +1,5 @@
 # BluetoothHelper
-Bluetooth 편리하게 사용할 수 있게 돕는 클래스입니다.
+Bluetooth 편리하게 사용할 수 있게 돕는 클래스입니다.  
 1개의 인스턴스는 1개의 Connection을 관리합니다.
 
 ### Need Permission
