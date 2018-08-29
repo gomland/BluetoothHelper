@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,16 +17,18 @@ import android.widget.TextView;
 import java.util.Set;
 
 import my.gomland.android.bluetooth.Bluetooth;
+import my.gomland.android.bluetooth.BluetoothFactory;
 import my.gomland.android.bluetooth.BluetoothListener;
 
 public class MainActivity extends AppCompatActivity implements BluetoothListener, View.OnClickListener {
+    private Bluetooth mBluetooth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bluetooth.Helper.initialize(this, this);
+        mBluetooth = BluetoothFactory.createNewInstance(this, this);
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothListener
             String[] device = text.split("@@");
             if(device.length > 1){
                 String macAddress = device[1];
-                Bluetooth.Helper.connect(Bluetooth.UuidType.UDP, macAddress);
+                mBluetooth.connect(Bluetooth.UuidType.SERIAL, macAddress);
             }
         }
     }
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothListener
         LinearLayout deviceList = findViewById(R.id.device_list);
         deviceList.removeAllViews();
 
-        Set<BluetoothDevice> devices = Bluetooth.Helper.getPairedDevice();
+        Set<BluetoothDevice> devices = mBluetooth.getPairedDevice();
         for(BluetoothDevice device : devices){
             Button deviceBtn = new Button(this);
             deviceBtn.setText(device.getName() + "@@" + device.getAddress());
@@ -99,26 +100,26 @@ public class MainActivity extends AppCompatActivity implements BluetoothListener
             deviceList.addView(deviceBtn);
         }
 
-        Bluetooth.Helper.startDiscovery();
+        mBluetooth.startDiscovery();
     }
 
     public void onClickCancel(View view) {
-        Bluetooth.Helper.cancelDiscovery();
+        mBluetooth.cancelDiscovery();
     }
 
     public void onClickSend(View view) {
         EditText editText = findViewById(R.id.send_message);
         if (!TextUtils.isEmpty(editText.getText())) {
-            Bluetooth.Helper.sendMessage(editText.getText().toString());
+            mBluetooth.sendMessage(editText.getText().toString());
         }
     }
 
     public void onClickListen(View view) {
-        Bluetooth.Helper.listen(Bluetooth.UuidType.SERIAL);
+        mBluetooth.listen(Bluetooth.UuidType.SERIAL);
     }
 
     public void onClickDisconnect(View view) {
-        Bluetooth.Helper.disconnect();
+        mBluetooth.disconnect();
     }
 
 }

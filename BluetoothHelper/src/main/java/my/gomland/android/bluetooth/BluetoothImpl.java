@@ -37,8 +37,11 @@ class BluetoothImpl implements Bluetooth {
     private BluetoothHandler mBluetoothHandler = new BluetoothHandler();
     private BluetoothBroadcastReceiver mBluetoothBroadcastReceiver;
 
-    @Override
-    public void initialize(@NonNull Context context, @NonNull BluetoothListener bluetoothListener) {
+
+    BluetoothImpl(){
+    }
+
+    void initialize(@NonNull Context context, @NonNull BluetoothListener bluetoothListener) {
         mContext = context;
         mBluetoothListener = bluetoothListener;
 
