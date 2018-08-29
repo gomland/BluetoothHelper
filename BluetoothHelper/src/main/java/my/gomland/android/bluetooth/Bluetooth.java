@@ -41,10 +41,6 @@ public interface Bluetooth {
         int LOST = 2;
     }
 
-    Bluetooth Helper = new BluetoothImpl();
-
-    void initialize(@NonNull Context context, @NonNull BluetoothListener bluetoothListener);
-
     void disconnect();
 
     void startDiscovery();
