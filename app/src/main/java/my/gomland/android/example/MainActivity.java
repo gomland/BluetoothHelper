@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothListener
                 textView.setText("CONNECTED");
                 break;
             case Bluetooth.State.LOST:
-            case Bluetooth.State.FAIL:
                 textView.setText("CONNECTION LOST");
+                break;
+            case Bluetooth.State.FAIL:
+                textView.setText("CONNECTION FAIL");
                 break;
         }
     }
